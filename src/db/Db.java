@@ -1,18 +1,46 @@
 package db;
 
 import domain.Question;
+import helper.SerializationHelper;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Jan Kakol on 2015-05-28.
  */
-public class Db {
+public class Db implements Serializable {
 
     public static List<Question> questionList;
 
-    public static void initDb() {
+    public static void initDb(String db) {
+        try {
+            List<Question> o = (List<Question>) SerializationHelper.deSerialize(db);
+            if (o == null || o.size() == 0) {
+                fillData();
+            } else {
+                questionList = o;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static Question getByDescription(String description) {
+        for (Question question : questionList) {
+            if (question.getDescription().equals(description)) {
+                return question;
+            }
+        }
+        return null;
+    }
+
+    private static void fillData() {
         questionList = new ArrayList<Question>();
         questionList.add(new Question("To jest coś tam coś tam", 1));
         questionList.add(new Question("To jest coś tam coś coś", 3));
@@ -25,12 +53,11 @@ public class Db {
         questionList.add(new Question("the game", 3));
     }
 
-    public static Question getByDescription(String description) {
-        for (Question question : questionList) {
-            if (question.getSubscription().equals(description)) {
-                return question;
-            }
+    public static void saveDb(String db) {
+        try {
+            SerializationHelper.serialize(questionList, db);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return null;
     }
 }

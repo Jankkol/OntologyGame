@@ -18,7 +18,7 @@ public class GameHelper {
         int numberOfQuestion = 0;
         for (Question question : match.getQuestions().keySet()) {
             numberOfQuestion++;
-            System.out.println(numberOfQuestion + " : " + question.getSubscription());
+            System.out.println(numberOfQuestion + " : " + question.getDescription());
             String answer = in.next();
             addAnswerToHistory(question, answer);
         }
@@ -26,10 +26,11 @@ public class GameHelper {
     }
 
     private static void addAnswerToHistory(Question question, String answer) {
-        Question questionFromDB = Db.getByDescription(question.getSubscription());
-        if (questionFromDB.getAnswers().get(answer) != null) {
-            Integer integer = questionFromDB.getAnswers().get(answer);
-            questionFromDB.getAnswers().put(answer, integer++);
+        Question questionFromDB = Db.getByDescription(question.getDescription());
+        Integer value = questionFromDB.getAnswers().get(answer);
+        if (value != null) {
+            value = value + 1;
+            questionFromDB.getAnswers().put(answer, value);
         } else {
             questionFromDB.getAnswers().put(answer, 1);
         }
@@ -37,7 +38,7 @@ public class GameHelper {
 
     public static void showAllAnswer() {
         for (Question question : Db.questionList) {
-            System.out.println(question.getSubscription() + " ");
+            System.out.println(question.getDescription() + " ");
             for (Map.Entry<String, Integer> entry : question.getAnswers().entrySet()) {
                 System.out.println(entry.getKey() + " :  " + entry.getValue());
             }

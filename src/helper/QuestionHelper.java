@@ -16,7 +16,7 @@ public class QuestionHelper {
         HashMap<Question, Integer> questions = new HashMap<Question, Integer>();
         for (int i = 0; i < numberOfQuestion; i++) {
             Random random = new Random();
-            questions.put(Db.questionList.get(random.nextInt(Db.questionList.size())), 0);
+            questions.put(Db.questionList.get(random.nextInt(Db.questionList.size() - 1)), 0);
         }
         return questions;
     }

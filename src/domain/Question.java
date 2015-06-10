@@ -1,13 +1,14 @@
 package domain;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
  * Created by Jan Kakol on 2015-05-28.
  */
-public class Question {
+public class Question implements Serializable {
 
-    private String subscription;
+    private String description;
 
     private HashMap<String, Integer> answers = new HashMap<String, Integer>();
 
@@ -15,17 +16,17 @@ public class Question {
 
     private int difficultyFactor;
 
-    public Question(String subscription, int difficultyFactor) {
-        this.subscription = subscription;
+    public Question(String description, int difficultyFactor) {
+        this.description = description;
         this.difficultyFactor = difficultyFactor;
     }
 
-    public String getSubscription() {
-        return subscription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setSubscription(String subscription) {
-        this.subscription = subscription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public HashMap<String, Integer> getAnswers() {
