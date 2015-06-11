@@ -13,7 +13,7 @@ public class AbstractFrame extends JFrame {
     public static final int HEIGHT = 500;
 
     public AbstractFrame(){
-        super("Hello World");
+        super("Ontology Game");
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocation(100,100);
