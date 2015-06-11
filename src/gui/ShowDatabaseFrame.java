@@ -1,5 +1,7 @@
 package gui;
 
+import helper.GameHelper;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -12,5 +14,9 @@ public class ShowDatabaseFrame extends AbstractFrame {
         super();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
+        String allAnswer = GameHelper.showAllAnswer();
+
+        JTextArea  result = new JTextArea (allAnswer);
+        add(result);
     }
 }

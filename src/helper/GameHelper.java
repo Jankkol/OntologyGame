@@ -45,13 +45,15 @@ public class GameHelper {
         }
     }
 
-    public static void showAllAnswer() {
+    public static String showAllAnswer() {
+        StringBuilder stringBuilder = new StringBuilder();
         for (Question question : Db.questionList) {
-            System.out.println(question.getDescription() + " ");
+            stringBuilder.append(question.getDescription()).append(" ");
             for (Map.Entry<String, Integer> entry : question.getAnswers().entrySet()) {
-                System.out.println(entry.getKey() + " :  " + entry.getValue());
+                stringBuilder.append(entry.getKey()).append(" :  ").append(entry.getValue()).append("\n");
             }
         }
+        return stringBuilder.toString();
     }
 
     public static void endGame(Match match) {
