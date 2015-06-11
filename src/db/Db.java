@@ -3,7 +3,9 @@ package db;
 import domain.Question;
 import helper.SerializationHelper;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +26,10 @@ public class Db implements Serializable {
                 questionList = o;
             }
         } catch (IOException e) {
+            fillData();
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
+            fillData();
             e.printStackTrace();
         }
 
@@ -58,6 +62,14 @@ public class Db implements Serializable {
             SerializationHelper.serialize(questionList, db);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void saveQuestion(Question questionFromDB) {
+        for (Question question : questionList) {
+            if (question.getDescription().equals(questionFromDB.getDescription())) {
+                question.setAnswers(questionFromDB.getAnswers());
+            }
         }
     }
 }

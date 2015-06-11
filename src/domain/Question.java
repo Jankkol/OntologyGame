@@ -16,6 +16,13 @@ public class Question implements Serializable {
 
     private int difficultyFactor;
 
+    public Question(Question question){
+        this.description = question.getDescription();
+        this.answers = question.getAnswers();
+        this.difficultyFactor = question.getDifficultyFactor();
+        this.image = question.getImage();
+    }
+
     public Question(String description, int difficultyFactor) {
         this.description = description;
         this.difficultyFactor = difficultyFactor;

@@ -25,6 +25,7 @@ public class GameRunner {
                 case 1:
                     Match match = InitGameHelper.createMatch(in);
                     GameHelper.startGame(match, in);
+                    GameHelper.endGame(match);
                     System.out.println("Thank you for game !");
                     break;
                 case 2:
