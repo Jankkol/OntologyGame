@@ -12,6 +12,8 @@ public class Match implements Serializable {
 
     private HashMap<Question, Integer> questions;
 
+    private int questionNumber = 1;
+
     public Match(User user, HashMap<Question, Integer> questions) {
         this.user = user;
         this.questions = questions;
@@ -27,6 +29,14 @@ public class Match implements Serializable {
 
     public HashMap<Question, Integer> getQuestions() {
         return questions;
+    }
+
+    public int getQuestionNumber() {
+        return questionNumber;
+    }
+
+    public void setQuestionNumber(int questionNumber) {
+        this.questionNumber = questionNumber;
     }
 
     public void setQuestions(HashMap<Question, Integer> questions) {

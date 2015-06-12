@@ -18,7 +18,7 @@ public class GameFrame extends AbstractFrame {
 
     public static Match match = null;
 
-    public static int questionNo = 1;
+    public static ImagePanel imagePanel;
 
     public GameFrame() {
         super();
@@ -40,9 +40,40 @@ public class GameFrame extends AbstractFrame {
 
         add(initGamePanel);
         startGame.addActionListener(startGame(initGamePanel, startGame, next, name, questionCount, answer));
+        next.addActionListener(nextStep(finishGame, answer, next));
+        finishGame.addActionListener(finishGame());
         add(startGame);
 
     }
+
+    private ActionListener finishGame() {
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+        };
+    }
+
+    private ActionListener nextStep(final JButton finishGame, final JTextField answer, final JButton next) {
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                remove(imagePanel);
+                match.setQuestionNumber(match.getQuestionNumber() + 1);
+                boolean setImage = setImage();
+                if (!setImage) {
+                    add(finishGame);
+                    answer.setVisible(false);
+                    next.setVisible(false);
+                    finishGame.setVisible(true);
+                }
+                validate();
+                repaint();
+            }
+        };
+    }
+
 
     private ActionListener startGame(final JPanel initGamePanel, final JButton startGame, final JButton next, final JTextField name, final JTextField questionCount, final JTextField answer) {
         return new ActionListener() {
@@ -55,16 +86,26 @@ public class GameFrame extends AbstractFrame {
                 answer.setVisible(true);
                 next.setVisible(true);
                 match = InitGameHelper.createMatch(name.getText(), questionCount.getText());
-                int i = 1;
-                for (Question entry : match.getQuestions().keySet()) {
-                    if(i == questionNo) {
-                        add(new ImagePanel(entry.getImage()));
-                        break;
-                    }
-                    i++;
-                }
+                setImage();
                 repaint();
             }
         };
+    }
+
+    private boolean setImage() {
+        int i = 1;
+        boolean isImageSet = false;
+        if (match.getQuestions().size() >= match.getQuestionNumber()) {
+            for (Question entry : match.getQuestions().keySet()) {
+                if (i == match.getQuestionNumber()) {
+                    imagePanel = new ImagePanel(entry.getImage());
+                    add(imagePanel);
+                    isImageSet = true;
+                    break;
+                }
+                i++;
+            }
+        }
+        return isImageSet;
     }
 }
