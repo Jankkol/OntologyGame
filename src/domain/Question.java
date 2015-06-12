@@ -23,6 +23,12 @@ public class Question implements Serializable {
         this.image = question.getImage();
     }
 
+    public Question(String description, String image, int difficultyFactor){
+        this.image = image;
+        this.description = description;
+        this.difficultyFactor = difficultyFactor;
+    }
+
     public Question(String description, int difficultyFactor) {
         this.description = description;
         this.difficultyFactor = difficultyFactor;

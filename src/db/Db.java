@@ -44,17 +44,12 @@ public class Db implements Serializable {
         return null;
     }
 
-    private static void fillData() {
+    public static void fillData() {
         questionList = new ArrayList<Question>();
-        questionList.add(new Question("To jest coś tam coś tam", 1));
-        questionList.add(new Question("To jest coś tam coś coś", 3));
-        questionList.add(new Question("blablabla", 3));
-        questionList.add(new Question("test", 3));
-        questionList.add(new Question("hahaha", 3));
-        questionList.add(new Question("moze sie uda", 3));
-        questionList.add(new Question("dupa", 3));
-        questionList.add(new Question("ontologia", 3));
-        questionList.add(new Question("the game", 3));
+        questionList.add(new Question("kot", "content/kot.jpg", 1));
+        questionList.add(new Question("pies", "content/pies.jpg", 1));
+        questionList.add(new Question("dom", "content/dom.jpg", 2));
+        questionList.add(new Question("java", "content/java.jpg", 3));
     }
 
     public static void saveDb(String db) {

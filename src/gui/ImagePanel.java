@@ -17,7 +17,7 @@ public class ImagePanel extends JPanel {
     public ImagePanel() {
         super();
 
-        File imageFile = new File("test.jpg");
+        File imageFile = new File("content/test.jpg");
         try {
             image = ImageIO.read(imageFile);
         } catch (IOException e) {
@@ -28,6 +28,22 @@ public class ImagePanel extends JPanel {
         Dimension dimension = new Dimension(image.getWidth(), image.getHeight());
         setPreferredSize(dimension);
     }
+
+    public ImagePanel(String imagePath) {
+        super();
+
+        File imageFile = new File(imagePath);
+        try {
+            image = ImageIO.read(imageFile);
+        } catch (IOException e) {
+            System.err.println("Blad odczytu obrazka");
+            e.printStackTrace();
+        }
+
+        Dimension dimension = new Dimension(image.getWidth(), image.getHeight());
+        setPreferredSize(dimension);
+    }
+
 
     @Override
     public void paintComponent(Graphics g) {

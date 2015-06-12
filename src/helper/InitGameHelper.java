@@ -10,29 +10,14 @@ import java.util.Scanner;
  */
 public class InitGameHelper {
 
-    public static Match createMatch(Scanner in) {
-        introduceGame();
-        User player = createPlayer(in);
+    public static Match createMatch(String userName, String questionCount) {
+        User player = createPlayer(userName);
         System.out.println("Nice to meet you " + player.getName() + "");
-        int numberOfQuestion = chooseNumberOfQuestion(in);
-        Match match = new Match(player, QuestionHelper.getRandomQuestions(numberOfQuestion));
-        return match;
+        int numberOfQuestion = Integer.parseInt(questionCount);
+        return new Match(player, QuestionHelper.getRandomQuestions(numberOfQuestion));
     }
 
-    private static int chooseNumberOfQuestion(Scanner in) {
-        System.out.println("How many question you have to answer?");
-        return Integer.parseInt(in.next());
-
-    }
-
-    private static User createPlayer(Scanner in) {
-        User user = new User(in.next());
-        return user;
-    }
-
-    private static void introduceGame() {
-        System.out.println("Hello in our ontology game ! Have fun");
-        System.out.println("");
-        System.out.println("Firstly please insert your name: ");
+    private static User createPlayer(String name) {
+        return new User(name);
     }
 }
