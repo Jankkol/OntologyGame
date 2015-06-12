@@ -11,28 +11,14 @@ import java.util.*;
  */
 public class GameHelper {
 
-
-    public static void startGame(Match match, Scanner in) {
-        System.out.println("So.. Let's Try ! ");
-        int numberOfQuestion = 0;
-        for (Question question : match.getQuestions().keySet()) {
-            numberOfQuestion++;
-            System.out.println(numberOfQuestion + " : " + question.getDescription());
-            String answer = in.next();
-            checkAnswerAndAddScore(match, question, answer);
-            addAnswerToHistory(question, answer);
-        }
-        System.out.println("");
-    }
-
-    private static void checkAnswerAndAddScore(Match match, Question question, String answer) {
+    public static void checkAnswerAndAddScore(Match match, Question question, String answer) {
         Question questionFromDB = Db.getByDescription(question.getDescription());
         HashMap<String, Integer> answers = questionFromDB.getAnswers();
 
         ScoreCalculator.resolveScore(match, question, answer, answers);
     }
 
-    private static void addAnswerToHistory(Question question, String answer) {
+    public static void addAnswerToHistory(Question question, String answer) {
         Question questionFromDB = Db.getByDescription(question.getDescription());
         Integer value = questionFromDB.getAnswers().get(answer);
         if (value != null) {
@@ -56,12 +42,12 @@ public class GameHelper {
         return stringBuilder.toString();
     }
 
-    public static void endGame(Match match) {
+    public static int endGame(Match match) {
         int sum = 0;
         for (Map.Entry<Question, Integer> entry : match.getQuestions().entrySet()) {
             sum = sum + entry.getValue();
         }
-        System.out.println("Your score is : " + sum);
+        return sum;
     }
 
 

@@ -1,9 +1,11 @@
 package gui;
 
+import db.Db;
 import domain.Match;
 import domain.Question;
 import helper.GameHelper;
 import helper.InitGameHelper;
+import runner.GameGUIRunner;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,6 +33,7 @@ public class GameFrame extends AbstractFrame {
         final JButton startGame = new JButton("Start Game");
         final JButton finishGame = new JButton("Finish Game");
         final JPanel initGamePanel = new JPanel();
+        final JLabel result = new JLabel();
         final JTextField name = new JTextField(5);
         final JTextField questionCount = new JTextField(3);
         initGamePanel.add(new JLabel("Enter your Name: "));
@@ -40,7 +43,7 @@ public class GameFrame extends AbstractFrame {
 
         add(initGamePanel);
         startGame.addActionListener(startGame(initGamePanel, startGame, next, name, questionCount, answer));
-        next.addActionListener(nextStep(finishGame, answer, next));
+        next.addActionListener(nextStep(finishGame, answer, next, result));
         finishGame.addActionListener(finishGame());
         add(startGame);
 
@@ -50,20 +53,27 @@ public class GameFrame extends AbstractFrame {
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Db.saveDb(GameGUIRunner.DB);
                 dispose();
             }
         };
     }
 
-    private ActionListener nextStep(final JButton finishGame, final JTextField answer, final JButton next) {
+    private ActionListener nextStep(final JButton finishGame, final JTextField answer, final JButton next, final JLabel result) {
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                GameHelper.checkAnswerAndAddScore(match, match.getActualQuestion(), answer.getText());
+                GameHelper.addAnswerToHistory(match.getActualQuestion(), answer.getText());
                 remove(imagePanel);
+                answer.setText("");
                 match.setQuestionNumber(match.getQuestionNumber() + 1);
                 boolean setImage = setImage();
                 if (!setImage) {
+                    int score = GameHelper.endGame(match);
+                    result.setText("Your score is: " + score + ". Thank you for game " + match.getUser().getName());
                     add(finishGame);
+                    add(result);
                     answer.setVisible(false);
                     next.setVisible(false);
                     finishGame.setVisible(true);
@@ -98,6 +108,7 @@ public class GameFrame extends AbstractFrame {
         if (match.getQuestions().size() >= match.getQuestionNumber()) {
             for (Question entry : match.getQuestions().keySet()) {
                 if (i == match.getQuestionNumber()) {
+                    match.setActualQuestion(entry);
                     imagePanel = new ImagePanel(entry.getImage());
                     add(imagePanel);
                     isImageSet = true;

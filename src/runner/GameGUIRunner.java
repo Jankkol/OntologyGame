@@ -10,7 +10,7 @@ import java.awt.*;
  */
 public class GameGUIRunner {
 
-    private static final String DB = "db.object";
+    public static final String DB = "db.object";
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
