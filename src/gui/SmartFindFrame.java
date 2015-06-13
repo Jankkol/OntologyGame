@@ -1,5 +1,6 @@
 package gui;
 
+import dto.SmartFindDTO;
 import helper.GameHelper;
 
 import javax.swing.*;
@@ -14,6 +15,8 @@ public class SmartFindFrame extends AbstractFrame {
 
     private static ImagePanel imagePanel = null;
 
+    private static JLabel result = null;
+
     public SmartFindFrame() throws HeadlessException {
         super();
         setLayout(new FlowLayout());
@@ -22,9 +25,9 @@ public class SmartFindFrame extends AbstractFrame {
 
         final JTextField searchWord = new JTextField(5);
         final JButton searchButton = new JButton("Search");
-        final JTextField name = new JTextField(5);
-        final JTextField questionCount = new JTextField(3);
 
+        add(searchWord);
+        add(searchButton);
         searchButton.addActionListener(smartFind(searchWord));
     }
 
@@ -32,11 +35,34 @@ public class SmartFindFrame extends AbstractFrame {
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GameHelper.smartFind(searchWord.getText());
-                if (imagePanel == null) {
-
+                SmartFindDTO smartFindDTO = GameHelper.smartFind(searchWord.getText());
+                if (smartFindDTO != null) {
+                    removeOldPanel();
+                    imagePanel = new ImagePanel(smartFindDTO.getImage());
+                    result = new JLabel("I think, yours " + smartFindDTO.getAnswer() + " is type of : " + smartFindDTO.getTypeOf());
+                    add(imagePanel);
+                    add(result);
+                } else {
+                    removeOldPanel();
+                    if (imagePanel != null) {
+                        remove(imagePanel);
+                    }
+                    result = new JLabel("We have no information about : " + searchWord.getText());
+                    add(result);
                 }
+
+                validate();
+                repaint();
             }
         };
+    }
+
+    private void removeOldPanel() {
+        if (imagePanel != null) {
+            remove(imagePanel);
+        }
+        if (result != null) {
+            remove(result);
+        }
     }
 }

@@ -1,12 +1,12 @@
 package helper;
 
 import db.Db;
+import db.Rank;
 import domain.Match;
 import domain.Question;
-import dto.FindDTO;
+import domain.User;
 import dto.SmartFindDTO;
 
-import javax.swing.*;
 import java.util.*;
 
 /**
@@ -37,10 +37,11 @@ public class GameHelper {
     public static String showAllAnswer() {
         StringBuilder stringBuilder = new StringBuilder();
         for (Question question : Db.questionList) {
-            stringBuilder.append(question.getDescription()).append(" ");
+            stringBuilder.append(question.getDescription()).append(" ").append("\n\n");
             for (Map.Entry<String, Integer> entry : question.getAnswers().entrySet()) {
                 stringBuilder.append(entry.getKey()).append(" :  ").append(entry.getValue()).append("\n");
             }
+            stringBuilder.append("\n");
         }
         return stringBuilder.toString();
     }
@@ -50,32 +51,57 @@ public class GameHelper {
         for (Map.Entry<Question, Integer> entry : match.getQuestions().entrySet()) {
             sum = sum + entry.getValue();
         }
+        match.getUser().setScore(sum);
         return sum;
     }
 
 
     public static SmartFindDTO smartFind(String searchWord) {
         SmartFindDTO smartFindDTO = null;
-        List<FindDTO> findDTOList = new ArrayList<FindDTO>();
+        List<SmartFindDTO> smartFindDTOList = new ArrayList<SmartFindDTO>();
         for (Question question : Db.questionList) {
-            FindDTO findDTO = null;
-            for(Map.Entry answers : question.getAnswers().entrySet()){
-                if(findDTO == null || findDTO.getCount() < (int) answers.getValue() ){
-                    findDTO = new FindDTO();
-                    findDTO.setAnswer(String.valueOf(answers.getKey()));
-                    findDTO.setCount((Integer) answers.getValue());
-                }
-                if(answers.getKey().equals(searchWord)){
+            for (Map.Entry answer : question.getAnswers().entrySet()) {
+                if (answer.getKey().equals(searchWord)) {
                     smartFindDTO = new SmartFindDTO();
                     smartFindDTO.setImage(question.getImage());
+                    smartFindDTO.setAnswer(searchWord);
+                    smartFindDTO.setCount((Integer) answer.getValue());
+                    smartFindDTO.setTypeOf(resolveType(question));
+                    smartFindDTOList.add(smartFindDTO);
+                    break;
                 }
             }
-            if(smartFindDTO != null && findDTO != null) {
-                smartFindDTO.setTypeOf(findDTO.getAnswer());
-                findDTO.setSmartFindDTO(smartFindDTO);
-                findDTOList.add(findDTO);
+        }
+        Collections.sort(smartFindDTOList);
+        return smartFindDTOList.size() > 0 ? smartFindDTOList.get(0) : null;
+    }
+
+    private static String resolveType(Question question) {
+        String type = null;
+        int value = 0;
+        for (Map.Entry answer : question.getAnswers().entrySet()) {
+            if ((Integer) answer.getValue() > value) {
+                value = (Integer) answer.getValue();
+                type = (String) answer.getKey();
             }
         }
-        return smartFindDTO;
+
+        return type;
+    }
+
+    public static void saveUserScore(Match match) {
+        Rank.userList.add(match.getUser());
+    }
+
+    public static String getRank() {
+        StringBuilder stringBuilder = new StringBuilder();
+        List<User> userList = Rank.userList;
+        Collections.sort(userList);
+        int i = 1;
+        for (User user : userList) {
+            stringBuilder.append(i).append(".  ").append(user.getName()).append(" : ").append(user.getScore()).append("\n");
+            i++;
+        }
+        return stringBuilder.toString();
     }
 }

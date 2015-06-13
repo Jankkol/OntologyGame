@@ -18,15 +18,18 @@ public class GameMenuFrame extends AbstractFrame {
         final JButton testGame = new JButton("Test Game");
         final JButton showResults = new JButton("Show DataBase Questions");
         final JButton smartFind = new JButton("Smart find image");
+        final JButton rank = new JButton("Rank");
         startGame.addActionListener(openFrame(MenuType.START_GAME));
         testGame.addActionListener(openFrame(MenuType.TEST_GAMEPLAY));
         showResults.addActionListener(openFrame(MenuType.SHOW_DB));
         smartFind.addActionListener(openFrame(MenuType.SMART_FIND));
+        rank.addActionListener(openFrame(MenuType.RANK));
 
         add(jPanel);
         add(startGame);
         add(testGame);
         add(showResults);
+        add(rank);
         add(smartFind);
         setVisible(true);
     }
@@ -47,6 +50,9 @@ public class GameMenuFrame extends AbstractFrame {
                         break;
                     case SMART_FIND:
                         new SmartFindFrame();
+                        break;
+                    case RANK:
+                        new RankFrame();
                         break;
                     default:
                         break;

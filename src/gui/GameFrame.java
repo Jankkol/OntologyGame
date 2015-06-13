@@ -1,6 +1,7 @@
 package gui;
 
 import db.Db;
+import db.Rank;
 import domain.Match;
 import domain.Question;
 import helper.GameHelper;
@@ -53,7 +54,9 @@ public class GameFrame extends AbstractFrame {
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                GameHelper.saveUserScore(match);
                 Db.saveDb(GameGUIRunner.DB);
+                Rank.saveRank(GameGUIRunner.RANK);
                 dispose();
             }
         };

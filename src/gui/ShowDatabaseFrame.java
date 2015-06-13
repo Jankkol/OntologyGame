@@ -17,6 +17,9 @@ public class ShowDatabaseFrame extends AbstractFrame {
         String allAnswer = GameHelper.showAllAnswer();
 
         JTextArea  result = new JTextArea (allAnswer);
-        add(result);
+        result.setEditable(false);
+        JScrollPane scroll = new JScrollPane(result);
+        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        add(scroll);
     }
 }

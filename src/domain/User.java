@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by Jan Kakol on 2015-05-28.
  */
-public class User implements Serializable {
+public class User implements Serializable, Comparable<User> {
 
     private String name;
 
@@ -30,5 +30,10 @@ public class User implements Serializable {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    @Override
+    public int compareTo(User o) {
+        return o.getScore() - this.getScore();
     }
 }
