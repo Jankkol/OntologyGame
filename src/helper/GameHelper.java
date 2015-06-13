@@ -3,7 +3,10 @@ package helper;
 import db.Db;
 import domain.Match;
 import domain.Question;
+import dto.FindDTO;
+import dto.SmartFindDTO;
 
+import javax.swing.*;
 import java.util.*;
 
 /**
@@ -51,4 +54,28 @@ public class GameHelper {
     }
 
 
+    public static SmartFindDTO smartFind(String searchWord) {
+        SmartFindDTO smartFindDTO = null;
+        List<FindDTO> findDTOList = new ArrayList<FindDTO>();
+        for (Question question : Db.questionList) {
+            FindDTO findDTO = null;
+            for(Map.Entry answers : question.getAnswers().entrySet()){
+                if(findDTO == null || findDTO.getCount() < (int) answers.getValue() ){
+                    findDTO = new FindDTO();
+                    findDTO.setAnswer(String.valueOf(answers.getKey()));
+                    findDTO.setCount((Integer) answers.getValue());
+                }
+                if(answers.getKey().equals(searchWord)){
+                    smartFindDTO = new SmartFindDTO();
+                    smartFindDTO.setImage(question.getImage());
+                }
+            }
+            if(smartFindDTO != null && findDTO != null) {
+                smartFindDTO.setTypeOf(findDTO.getAnswer());
+                findDTO.setSmartFindDTO(smartFindDTO);
+                findDTOList.add(findDTO);
+            }
+        }
+        return smartFindDTO;
+    }
 }
