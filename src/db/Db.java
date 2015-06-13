@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -96,5 +97,16 @@ public class Db implements Serializable {
                 question.setAnswers(questionFromDB.getAnswers());
             }
         }
+    }
+
+    public static HashMap<Question, Integer> testQuestion() {
+        HashMap<Question, Integer> questionList = new HashMap<Question, Integer>();
+        questionList.put(new Question("boisko", "content/9.jpg", 1), 0);
+        questionList.put(new Question("papieros", "content/19.jpg", 1), 0);
+        questionList.put(new Question("miasto", "content/22.jpg", 3), 0);
+        questionList.put(new Question("web", "content/30.jpg", 3), 0);
+        questionList.put(new Question("windows", "content/8.jpg", 1), 0);
+        questionList.put(new Question("kot", "content/kot.jpg", 1), 0);
+        return questionList;
     }
 }

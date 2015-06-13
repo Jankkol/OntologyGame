@@ -1,5 +1,9 @@
 package gui;
 
+import db.Db;
+import domain.Match;
+import domain.User;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
